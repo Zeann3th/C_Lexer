@@ -14,7 +14,7 @@ var (
 )
 
 func main() {
-	fileName := "internal/example/hello.cpp"
+	fileName := "internal/example/hello.c"
 
 	source, err := os.ReadFile(fileName)
 	if err != nil {

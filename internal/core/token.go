@@ -4,7 +4,7 @@ type Token int
 
 const (
 	_ = iota
-	TOKEN_HASH
+	TOKEN_OPERATION
 	TOKEN_COMMENT
 	TOKEN_SYMBOL
 	TOKEN_OPAREN
