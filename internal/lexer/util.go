@@ -1,4 +1,6 @@
-package core
+package lexer
+
+import "strings"
 
 func IsSpace(b byte) bool {
 	return b == 32
@@ -16,6 +18,14 @@ func IsAlNum(b byte) bool {
 	return IsAlpha(b) || IsDigit(b)
 }
 
-func ISOC(b byte) bool {
+func IsOC(b byte) bool {
 	return b == 40 || b == 41 || b == 123 || b == 125
+}
+
+func IsOperand(b byte) bool {
+	s := "+-*/=!><%"
+	if strings.Contains(s, string(b)) {
+		return true
+	}
+	return false
 }

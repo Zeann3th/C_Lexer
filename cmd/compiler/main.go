@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/zeann3th/C_Compiler/internal/core"
+	"github.com/zeann3th/C_Compiler/internal/lexer"
 )
 
 var (
@@ -14,15 +14,18 @@ var (
 )
 
 func main() {
-	fileName := "internal/example/hello.c"
+	fileName := "internal/example/gcd.c"
 
 	source, err := os.ReadFile(fileName)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(fmt.Sprintf("[FILEIO]: ERROR: Failed to open file <%v>", fileName))
 	}
 	// fmt.Println(string(source))
-	src := core.NewSource(source)
+	src := lexer.NewLexer(source)
+	fmt.Printf("%v\t%v\t\t(%v)\n", "Id", "Name", "Value")
 	for src.Cursor < len(src.Content) {
-		fmt.Printf("%v (%v)\n", src.NextToken(), src.Bufnr)
+		token := src.NextToken()
+		// core.ExpectToken(src, core.TOKEN_SYMBOL)
+		fmt.Printf("%v\t%v\t\t(%v)\n", token.Kind, token.Name, token.Value)
 	}
 }
