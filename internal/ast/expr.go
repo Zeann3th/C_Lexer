@@ -8,10 +8,28 @@ func NewNumberExpr(value float64) *NumberExpr {
 	return &NumberExpr{Value: value}
 }
 
-func (nl *NumberExpr) exprNode() {}
+func (n *NumberExpr) exprNode() {}
+
+type StringExpr struct {
+	Value string
+}
+
+func NewStringExpre(value string) *StringExpr {
+	return &StringExpr{Value: value}
+}
+
+func (s *StringExpr) exprNode() {}
 
 type VariableExpr struct {
+	Type string
 	Name string
+}
+
+func NewVariableExpr(_type, name string) *VariableExpr {
+	return &VariableExpr{
+		Type: _type,
+		Name: name,
+	}
 }
 
 func (v *VariableExpr) exprNode() {}
@@ -25,8 +43,17 @@ type BinaryExpr struct {
 func (b *BinaryExpr) exprNode() {}
 
 type CallExpr struct {
-	Callee Expr
+	Type   string
+	Callee string
 	Args   []Expr
+}
+
+func NewCallExpr(_type, callee string, args []Expr) *CallExpr {
+	return &CallExpr{
+		Type:   _type,
+		Callee: callee,
+		Args:   args,
+	}
 }
 
 func (c *CallExpr) exprNode() {}

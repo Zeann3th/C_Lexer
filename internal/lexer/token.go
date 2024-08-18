@@ -4,7 +4,7 @@ type TokenKind int
 
 const (
 	UNDEFINED TokenKind = iota
-	OPERATION
+	PREPROCESSOR
 	COMMENT
 	KEYWORD
 	TYPE
@@ -39,37 +39,37 @@ const (
 )
 
 var Codex = map[TokenKind]string{
-	OPERATION: "OPERATION",
-	COMMENT:   "COMMENT",
-	KEYWORD:   "KEYWORD",
-	TYPE:      "TYPE",
-	SYMBOL:    "SYMBOL",
-	OPAREN:    "OPAREN",
-	CPAREN:    "CPAREN",
-	OCURLY:    "OCURLY",
-	CCURLY:    "CCURLY",
-	SEMICOLON: "SEMICOLON",
-	COMMA:     "COMMA",
-	DOT:       "DOT",
-	NUMBER:    "NUMBER",
-	STRING:    "STRING",
-	CHAR:      "CHAR",
-	RETURN:    "RETURN",
-	ERROR:     "ERROR",
-	EOF:       "EOF",
-	UNDEFINED: "UNDEFINED",
-	ASSIGN:    "ASSIGN",
-	NOT:       "NOT",
-	NOTEQ:     "NOTEQUAL",
-	EQ:        "EQUAL",
-	LT:        "LESS",
-	GT:        "GREATER",
-	LTE:       "LESS THAN OR EQUAL TO",
-	GTE:       "GREATER THAN OR EQUAL TO",
-	ADD:       "ADDITION",
-	SUB:       "SUBTRACTION",
-	DIV:       "DIVISION",
-	MUL:       "MULTIPLICATION",
+	PREPROCESSOR: "PREPROCESSOR",
+	COMMENT:      "COMMENT",
+	KEYWORD:      "KEYWORD",
+	TYPE:         "TYPE",
+	SYMBOL:       "SYMBOL",
+	OPAREN:       "OPAREN",
+	CPAREN:       "CPAREN",
+	OCURLY:       "OCURLY",
+	CCURLY:       "CCURLY",
+	SEMICOLON:    "SEMICOLON",
+	COMMA:        "COMMA",
+	DOT:          "DOT",
+	NUMBER:       "NUMBER",
+	STRING:       "STRING",
+	CHAR:         "CHAR",
+	RETURN:       "RETURN",
+	ERROR:        "ERROR",
+	EOF:          "EOF",
+	UNDEFINED:    "UNDEFINED",
+	ASSIGN:       "ASSIGN",
+	NOT:          "NOT",
+	NOTEQ:        "NOTEQUAL",
+	EQ:           "EQUAL",
+	LT:           "LESS",
+	GT:           "GREATER",
+	LTE:          "LESS THAN OR EQUAL TO",
+	GTE:          "GREATER THAN OR EQUAL TO",
+	ADD:          "ADDITION",
+	SUB:          "SUBTRACTION",
+	DIV:          "DIVISION",
+	MUL:          "MULTIPLICATION",
 }
 
 type Token struct {

@@ -31,12 +31,54 @@ func (p *Parser) ParseNumberExpr() ast.Expr {
 }
 
 func (p *Parser) ParseParenExpr() ast.Expr {
-	p.NextToken()
+	p.GetNextToken()
 	v := p.ParseExpr()
+	if v == nil {
+		return nil
+	}
 	if p.Current.Kind != lx.CPAREN {
 		fmt.Printf("Line %v, col %v: ERROR: Expected %v but got %v instead\n", p.Line, p.Col, lx.Codex[lx.CPAREN], lx.Codex[p.Current.Kind])
 	}
 	return v
+}
+
+func (p *Parser) ParseIdentifierExpr() ast.Expr { // Needs more checking
+	// Return type
+	_type := p.Bufnr
+	p.GetNextToken()
+	// Identifier
+	name := ""
+	if p.Current.Kind == lx.SYMBOL {
+		name = p.Bufnr
+	} else {
+		fmt.Printf("Line %v, col %v: ERROR: Expected %v but got %v instead\n", p.Line, p.Col, lx.Codex[lx.SYMBOL], lx.Codex[p.Current.Kind])
+		return nil
+	}
+	p.GetNextToken()
+	if p.Current.Kind != lx.OPAREN {
+		return ast.NewVariableExpr(_type, name)
+	}
+	p.GetNextToken()
+	args := []ast.Expr{}
+	if p.Current.Kind != lx.CPAREN {
+		for {
+			if arg := p.ParseExpr(); arg != nil {
+				args = append(args, arg)
+			} else {
+				return nil
+			}
+			if p.Current.Kind == lx.CPAREN {
+				break
+			}
+			if p.Current.Kind != lx.COMMA {
+				fmt.Printf("Line %v, col %v: ERROR: Expected %v or %v but got %v instead\n", p.Line, p.Col, lx.Codex[lx.CPAREN], lx.Codex[lx.COMMA], lx.Codex[p.Current.Kind])
+				return nil
+			}
+			p.GetNextToken()
+		}
+	}
+	p.GetNextToken()
+	return ast.NewCallExpr(_type, name, args)
 }
 
 func (p *Parser) ParsePrimary() ast.Expr {
@@ -48,5 +90,7 @@ func (p *Parser) ParsePrimary() ast.Expr {
 		return p.ParseNumberExpr()
 	case lx.OPAREN:
 		return p.ParseParenExpr()
+	case lx.TYPE:
+		return p.ParseIdentifierExpr()
 	}
 }
