@@ -208,14 +208,13 @@ func (l *Lexer) HandleCharLiteral() *Token {
 
 // HandleNumber checks for a number or a '.' for floats.
 func (l *Lexer) HandleNumber() *Token {
-	numStr := ""
+	l.Bufnr = ""
 	for do := true; do; do = (IsDigit(l.LastByte) || l.LastByte == '.') {
-		numStr += string(l.LastByte)
+		l.Bufnr += string(l.LastByte)
 		l.LastByte = l.GetByte()
 	}
-	numTmp, _ := strconv.ParseFloat(numStr, 64)
-	l.NumBuf = numTmp
-	l.Bufnr = strconv.FormatFloat(numTmp, 'f', -1, 64)
+	l.NumBuf, _ = strconv.ParseFloat(l.Bufnr, 64)
+	l.Bufnr = strconv.FormatFloat(l.NumBuf, 'f', -1, 64)
 	return NewToken(NUMBER, l.Bufnr)
 }
 
