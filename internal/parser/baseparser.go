@@ -28,16 +28,16 @@ func (p *Parser) ExpectToken(a lx.TokenKind, b ...lx.TokenKind) bool {
 	tmp := ""
 	for _, kind := range b {
 		tmp += lx.Codex[kind]
-		tmp += " "
+		tmp += ", "
 	}
-	msg := fmt.Errorf("Line %v, col %v: ERROR: Expected %v but got %v instead\n", p.Line, p.Col, tmp, lx.Codex[a])
+	msg := fmt.Errorf("Line %v, col %v: ERROR: Expected %vgot %v instead\n", p.Line, p.Col, tmp, lx.Codex[a])
 	for _, kind := range b {
-		if a != kind {
-			fmt.Println(msg)
-			return false
+		if a == kind {
+			return true
 		}
 	}
-	return true
+	fmt.Println(msg)
+	return false
 }
 
 func (p *Parser) ParsePrimary() ast.Node {
