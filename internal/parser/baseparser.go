@@ -9,16 +9,18 @@ import (
 
 type Parser struct {
 	*lx.Lexer
-	Current lx.Token
+	Current  lx.Token
+	Previous lx.Token
 }
 
-func NewParser(l lx.Lexer) *Parser {
+func NewParser(l *lx.Lexer) *Parser {
 	return &Parser{
-		Lexer: &l,
+		Lexer: l,
 	}
 }
 
 func (p *Parser) GetNextToken() {
+	p.Previous = p.Current
 	p.Current = *p.NextToken()
 }
 
@@ -28,7 +30,7 @@ func (p *Parser) ExpectToken(a lx.TokenKind, b ...lx.TokenKind) bool {
 		tmp += lx.Codex[kind]
 		tmp += " "
 	}
-	msg := fmt.Errorf("Line %v, col %v: ERROR: Expected %v but got %v instead\n", p.Line, p.Col, lx.Codex[a], tmp)
+	msg := fmt.Errorf("Line %v, col %v: ERROR: Expected %v but got %v instead\n", p.Line, p.Col, tmp, lx.Codex[a])
 	for _, kind := range b {
 		if a != kind {
 			fmt.Println(msg)
@@ -41,7 +43,7 @@ func (p *Parser) ExpectToken(a lx.TokenKind, b ...lx.TokenKind) bool {
 func (p *Parser) ParsePrimary() ast.Node {
 	switch p.Current.Kind {
 	default:
-		fmt.Printf("Line %v, col %v: ERROR: Unknown token", p.Line, p.Col)
+		fmt.Printf("Line %v, col %v: ERROR: Unknown token\n", p.Line, p.Col)
 		return ast.BadStmt{}
 	case lx.TYPE:
 		return p.ParseIdentifierExpr()

@@ -20,7 +20,7 @@ const (
 	EOF
 	ERROR
 	// Logical operations
-	COMPARE
+	ASSIGN
 	NOT
 	NOTEQ
 	EQ
@@ -58,7 +58,6 @@ var Codex = map[TokenKind]string{
 	ERROR:        "ERROR",
 	EOF:          "EOF",
 	UNDEFINED:    "UNDEFINED",
-	COMPARE:      "COMPARE",
 	NOT:          "NOT",
 	NOTEQ:        "NOTEQUAL",
 	EQ:           "EQUAL",

@@ -16,3 +16,8 @@ type Stmt interface {
 	Node
 	stmtNode()
 }
+
+type Program struct {
+	Pid  int
+	Body []Stmt
+}

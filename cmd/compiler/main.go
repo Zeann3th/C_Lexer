@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/zeann3th/C_Compiler/internal/lexer"
+	"github.com/zeann3th/C_Compiler/internal/parser"
 )
 
 var (
@@ -22,10 +23,13 @@ func main() {
 	}
 	// fmt.Println(string(source))
 	src := lexer.NewLexer(source)
-	fmt.Printf("%v\t%v\t\t(%v)\n", "Id", "Name", "Value")
+	parser := parser.NewParser(src)
+	// fmt.Printf("%v\t%v\t\t(%v)\n", "Id", "Name", "Value")
 	for src.Cursor < len(src.Content) {
-		token := src.NextToken()
+		// token := src.NextToken()
 		// core.ExpectToken(src, core.TOKEN_SYMBOL)
-		fmt.Printf("%v\t%v\t\t(%v)\n", token.Kind, token.Name, token.Value)
+		// fmt.Printf("%v\t%v\t\t(%v)\n", token.Kind, token.Name, token.Value)
+		parser.ParsePrimary()
+		parser.GetNextToken()
 	}
 }

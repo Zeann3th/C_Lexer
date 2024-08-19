@@ -12,7 +12,7 @@ func (p *Parser) ParseBlock() []ast.Stmt {
 	for {
 		switch p.Current.Kind {
 		case lx.TYPE:
-			stmt = p.ParseIdentifierExpr() // Check Declarations, assigments
+			stmt = p.ParseStmt()
 			block = append(block, stmt)
 		case lx.KEYWORD:
 			stmt = p.ParseKeywordStmt()
@@ -21,14 +21,17 @@ func (p *Parser) ParseBlock() []ast.Stmt {
 			p.GetNextToken()
 			switch p.Current.Kind {
 			case lx.OPAREN:
-				stmt = p.ParseFnCallExpr()
+				stmt = ast.NewExprStmt(p.ParseFnCallExpr())
 				block = append(block, stmt)
-			case lx.EQ:
-				stmt = p.ParseAssignExpr()
+			case lx.ASSIGN:
+				left := p.ParseNumberExpr()
+				stmt = ast.NewExprStmt(p.ParseAssignExpr(left))
 				block = append(block, stmt)
 			}
 		case lx.RETURN:
 			p.GetNextToken()
+			stmt = p.ParseReturnStmt()
+			block = append(block, stmt)
 			// ExpectToken from the previously appended type
 		case lx.CCURLY:
 			return block
@@ -36,7 +39,16 @@ func (p *Parser) ParseBlock() []ast.Stmt {
 			p.ExpectToken(p.Current.Kind, lx.TYPE, lx.KEYWORD, lx.SYMBOL, lx.CCURLY)
 			block = append(block, &ast.BadStmt{})
 		}
+		p.GetNextToken()
 	}
+}
+
+func (p *Parser) ParseStmt() ast.Stmt {
+	return &ast.BadStmt{}
+}
+
+func (p *Parser) ParseReturnStmt() ast.Stmt {
+	return &ast.ReturnStmt{}
 }
 
 func (p *Parser) ParseKeywordStmt() ast.Stmt {

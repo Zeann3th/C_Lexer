@@ -111,7 +111,7 @@ func (l *Lexer) HandleOperation() *Token {
 		l.GetByteAndSave()
 	}
 	l.GetByteAndSave()
-	return NewToken(OPERATION, l.Bufnr)
+	return NewToken(PREPROCESSOR, l.Bufnr)
 }
 
 // HandlePunctuation checks for ';' and consumes it into Bufnr.
@@ -255,9 +255,9 @@ func (l *Lexer) HandleLogicalExpr() *Token {
 			l.Cursor++
 			l.LastByte = tmp
 			l.Bufnr += string(l.LastByte)
-			kind = COMPARE
-		} else {
 			kind = EQ
+		} else {
+			kind = ASSIGN
 		}
 	case '<':
 		if tmp := l.PeekByte(); tmp == '=' {
