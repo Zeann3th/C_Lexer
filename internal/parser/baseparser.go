@@ -44,12 +44,17 @@ func (p *Parser) ParsePrimary() ast.Node {
 	switch p.Current.Kind {
 	default:
 		fmt.Printf("Line %v, col %v: ERROR: Unknown token\n", p.Line, p.Col)
-		return ast.BadStmt{}
+		return nil
 	case lx.TYPE:
-		return p.ParseIdentifierExpr()
+		return ast.NewExprStmt(p.ParseIdentifierExpr())
+	case lx.SYMBOL:
+		return nil
 	case lx.OCURLY:
 		return p.ParseBlock()
 	case lx.PREPROCESSOR:
-		return ast.BadExpr{}
+		return nil
+	case lx.EOF:
+		fmt.Printf("Reached end of file\n")
+		return nil
 	}
 }

@@ -37,20 +37,20 @@ func (p *Parser) ParseBlock() []ast.Stmt {
 			return block
 		default:
 			p.ExpectToken(p.Current.Kind, lx.TYPE, lx.KEYWORD, lx.SYMBOL, lx.CCURLY)
-			block = append(block, &ast.BadStmt{})
+			block = append(block, nil)
 		}
 		p.GetNextToken()
 	}
 }
 
 func (p *Parser) ParseStmt() ast.Stmt {
-	return &ast.BadStmt{}
+	return nil
 }
 
 func (p *Parser) ParseReturnStmt() ast.Stmt {
-	return &ast.ReturnStmt{}
+	return nil
 }
 
 func (p *Parser) ParseKeywordStmt() ast.Stmt {
-	return &ast.BadStmt{}
+	return nil
 }

@@ -25,8 +25,8 @@ func NewLexer(content []byte) *Lexer {
 		LastByte: byte(32),
 		Bufnr:    "",
 		NumBuf:   0,
-		Line:     0,
-		Col:      0,
+		Line:     1,
+		Col:      1,
 	}
 }
 

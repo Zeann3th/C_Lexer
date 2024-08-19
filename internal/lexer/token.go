@@ -58,6 +58,7 @@ var Codex = map[TokenKind]string{
 	ERROR:        "ERROR",
 	EOF:          "EOF",
 	UNDEFINED:    "UNDEFINED",
+	ASSIGN:       "ASSIGN",
 	NOT:          "NOT",
 	NOTEQ:        "NOTEQUAL",
 	EQ:           "EQUAL",

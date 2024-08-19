@@ -1,12 +1,14 @@
 package ast
 
 type VarDecl struct {
+	Type  string
 	Name  string
 	Value Expr
 }
 
-func NewVarDecl(name string, value Expr) *VarDecl {
+func NewVarDecl(_type, name string, value Expr) *VarDecl {
 	return &VarDecl{
+		Type:  _type,
 		Name:  name,
 		Value: value,
 	}

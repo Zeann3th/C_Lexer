@@ -28,19 +28,62 @@ func (p *Parser) ParseAssignExpr(left ast.Expr) ast.Expr {
 	case lx.SYMBOL:
 	default:
 		p.ExpectToken(p.Current.Kind, lx.NUMBER, lx.STRING, lx.SYMBOL)
-		return &ast.BadExpr{}
+		return nil
 	}
 	p.GetNextToken()
 	if p.ExpectToken(p.Current.Kind, lx.SEMICOLON) {
 		return ast.NewAssignExpr(left, right)
 	}
-	return &ast.BadExpr{}
+	return nil
 }
 
 func (p *Parser) ParseFnCallExpr() ast.Expr {
-	return &ast.BadExpr{}
+	return nil
 }
 
 func (p *Parser) ParseIdentifierExpr() ast.Expr {
-	return &ast.BadExpr{}
+	returnType, ok := p.Current.Value.(string)
+	if !ok {
+		return nil
+	}
+	typeHandlers := map[string]lx.TokenKind{
+		"string": lx.STRING,
+		"int":    lx.NUMBER,
+		"float":  lx.NUMBER,
+		"char":   lx.CHAR,
+	}
+	initValues := map[string]ast.Expr{
+		"string": ast.NewStringExpr(""),
+		"int":    ast.NewNumberExpr(0),
+		"float":  ast.NewNumberExpr(0.0),
+		"char":   ast.NewStringExpr(""),
+	}
+	name := ""
+	p.GetNextToken()
+	if p.ExpectToken(p.Current.Kind, lx.SYMBOL) {
+		name = p.Current.Name
+		p.GetNextToken()
+		switch p.Current.Kind {
+		case lx.OPAREN:
+			return p.ParseFnCallExpr()
+		case lx.ASSIGN:
+			p.GetNextToken()
+			if p.ExpectToken(p.Current.Kind, typeHandlers[returnType]) {
+				leftInit := ast.NewVarDecl(returnType, name, initValues[returnType])
+				left := ast.NewVarDeclExpr(leftInit)
+				p.GetNextToken()
+				if p.ExpectToken(p.Current.Kind, lx.SEMICOLON) {
+					return p.ParseAssignExpr(left)
+				}
+				return nil
+			}
+		case lx.SEMICOLON:
+			leftInit := ast.NewVarDecl(returnType, name, initValues[returnType])
+			return ast.NewVarDeclExpr(leftInit)
+		default:
+			p.ExpectToken(p.Current.Kind, lx.OPAREN, lx.ASSIGN)
+			return nil
+		}
+	}
+	return nil
 }

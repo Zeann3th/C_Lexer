@@ -20,19 +20,26 @@ func NewStringExpr(value string) *StringExpr {
 
 func (s *StringExpr) exprNode() {}
 
-type VariableExpr struct {
+type VarExpr struct {
 	Type string
 	Name string
 }
 
-func NewVariableExpr(_type, name string) *VariableExpr {
-	return &VariableExpr{
+func NewVarExpr(_type, name string) *VarExpr {
+	return &VarExpr{
 		Type: _type,
 		Name: name,
 	}
 }
 
-func (v *VariableExpr) exprNode() {}
+func NewVarDeclExpr(decl *VarDecl) *VarExpr {
+	return &VarExpr{
+		Type: decl.Type,
+		Name: decl.Name,
+	}
+}
+
+func (v *VarExpr) exprNode() {}
 
 type BinaryExpr struct {
 	Left     Expr
