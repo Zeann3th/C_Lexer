@@ -1,21 +1,9 @@
 package ast
 
-type BlockStmt struct {
-	Stmts []Stmt
-}
-
-func (b *BlockStmt) stmtNode() {}
-
-type ReturnStmt struct {
-	Value Expr
-}
+type ReturnStmt struct{}
 
 func (r *ReturnStmt) stmtNode() {}
 
-type IfStmt struct {
-	Condition Expr
-	Then      Stmt
-	Else      Stmt
-}
+type BadStmt struct{}
 
-func (i *IfStmt) stmtNode() {}
+func (b *BadStmt) stmtNode() {}

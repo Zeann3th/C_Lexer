@@ -14,7 +14,7 @@ type StringExpr struct {
 	Value string
 }
 
-func NewStringExpre(value string) *StringExpr {
+func NewStringExpr(value string) *StringExpr {
 	return &StringExpr{Value: value}
 }
 
@@ -57,3 +57,21 @@ func NewCallExpr(_type, callee string, args []Expr) *CallExpr {
 }
 
 func (c *CallExpr) exprNode() {}
+
+type AssignExpr struct {
+	Left  Expr
+	Right Expr
+}
+
+func NewAssignExpr(left, right Expr) *AssignExpr {
+	return &AssignExpr{
+		Left:  left,
+		Right: right,
+	}
+}
+
+func (a *AssignExpr) exprNode() {}
+
+type BadExpr struct{}
+
+func (b *BadExpr) exprNode() {}

@@ -255,7 +255,7 @@ func (l *Lexer) HandleLogicalExpr() *Token {
 			l.Cursor++
 			l.LastByte = tmp
 			l.Bufnr += string(l.LastByte)
-			kind = ASSIGN
+			kind = COMPARE
 		} else {
 			kind = EQ
 		}
