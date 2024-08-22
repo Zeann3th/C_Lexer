@@ -115,7 +115,7 @@ int main() {
 
 After tokenization, it should return:
 
-[](docs/assets/tokenize.png)
+![tokens](docs/assets/tokenize.png)  
 
 ## 📫 Feedbacks
 
