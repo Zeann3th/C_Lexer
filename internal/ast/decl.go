@@ -18,13 +18,15 @@ func (v *VarDecl) declNode() {}
 func (v *VarDecl) stmtNode() {}
 
 type FuncDecl struct {
+	Type   string
 	Name   string
 	Params []*VarDecl
 	Body   []Stmt
 }
 
-func NewFuncDecl(name string, params []*VarDecl, body []Stmt) *FuncDecl {
+func NewFuncDecl(_type, name string, params []*VarDecl, body []Stmt) *FuncDecl {
 	return &FuncDecl{
+		Type:   _type,
 		Name:   name,
 		Params: params,
 		Body:   body,

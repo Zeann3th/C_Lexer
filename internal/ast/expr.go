@@ -32,14 +32,35 @@ func NewVarExpr(_type, name string) *VarExpr {
 	}
 }
 
-func NewVarDeclExpr(decl *VarDecl) *VarExpr {
-	return &VarExpr{
-		Type: decl.Type,
-		Name: decl.Name,
+func (v *VarExpr) exprNode() {}
+
+type FuncExpr struct {
+	Type string
+	Name string
+	Args []Expr
+}
+
+func NewFuncExpr(_type, name string, args []Expr) *FuncExpr {
+	return &FuncExpr{
+		Type: _type,
+		Name: name,
+		Args: args,
 	}
 }
 
-func (v *VarExpr) exprNode() {}
+func (f *FuncExpr) exprNode() {}
+
+type DeclExpr struct {
+	X Decl
+}
+
+func NewDeclExpr(x Decl) *DeclExpr {
+	return &DeclExpr{
+		X: x,
+	}
+}
+
+func (v *DeclExpr) exprNode() {}
 
 type BinaryExpr struct {
 	Left     Expr

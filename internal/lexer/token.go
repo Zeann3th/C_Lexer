@@ -8,7 +8,8 @@ const (
 	COMMENT
 	KEYWORD
 	TYPE
-	SYMBOL
+	VAR
+	FUNC
 	OPAREN
 	CPAREN
 	OCURLY
@@ -43,7 +44,8 @@ var Codex = map[TokenKind]string{
 	COMMENT:      "COMMENT",
 	KEYWORD:      "KEYWORD",
 	TYPE:         "TYPE",
-	SYMBOL:       "SYMBOL",
+	VAR:          "VAR",
+	FUNC:         "FUNC",
 	OPAREN:       "OPAREN",
 	CPAREN:       "CPAREN",
 	OCURLY:       "OCURLY",

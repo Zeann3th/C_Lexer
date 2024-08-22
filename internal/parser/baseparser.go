@@ -43,11 +43,11 @@ func (p *Parser) ExpectToken(a lx.TokenKind, b ...lx.TokenKind) bool {
 func (p *Parser) ParsePrimary() ast.Node {
 	switch p.Current.Kind {
 	default:
-		fmt.Printf("Line %v, col %v: ERROR: Unknown token\n", p.Line, p.Col)
+		fmt.Printf("Line %v, col %v: ERROR: Unknown token: %v\n", p.Line, p.Col, lx.Codex[p.Current.Kind])
 		return nil
 	case lx.TYPE:
 		return ast.NewExprStmt(p.ParseIdentifierExpr())
-	case lx.SYMBOL:
+	case lx.KEYWORD:
 		return nil
 	case lx.OCURLY:
 		return p.ParseBlock()

@@ -25,9 +25,9 @@ func (p *Parser) ParseAssignExpr(left ast.Expr) ast.Expr {
 		right = p.ParseNumberExpr()
 	case lx.STRING:
 		right = p.ParseStringExpr()
-	case lx.SYMBOL:
+	case lx.VAR:
 	default:
-		p.ExpectToken(p.Current.Kind, lx.NUMBER, lx.STRING, lx.SYMBOL)
+		p.ExpectToken(p.Current.Kind, lx.NUMBER, lx.STRING, lx.VAR)
 		return nil
 	}
 	p.GetNextToken()
@@ -38,7 +38,17 @@ func (p *Parser) ParseAssignExpr(left ast.Expr) ast.Expr {
 }
 
 func (p *Parser) ParseFnCallExpr() ast.Expr {
-	return nil
+	p.GetNextToken()
+	for {
+		switch p.Current.Kind {
+		case lx.FUNC:
+		case lx.CPAREN:
+		case lx.STRING:
+		default:
+			p.ExpectToken(p.Current.Kind, lx.FUNC, lx.CPAREN, lx.STRING)
+			return nil
+		}
+	}
 }
 
 func (p *Parser) ParseIdentifierExpr() ast.Expr {
@@ -58,32 +68,52 @@ func (p *Parser) ParseIdentifierExpr() ast.Expr {
 		"float":  ast.NewNumberExpr(0.0),
 		"char":   ast.NewStringExpr(""),
 	}
-	name := ""
 	p.GetNextToken()
-	if p.ExpectToken(p.Current.Kind, lx.SYMBOL) {
-		name = p.Current.Name
-		p.GetNextToken()
-		switch p.Current.Kind {
-		case lx.OPAREN:
-			return p.ParseFnCallExpr()
-		case lx.ASSIGN:
+	name, ok := p.Current.Value.(string)
+	if !ok {
+		return nil
+	}
+	switch p.Current.Kind {
+	case lx.VAR:
+		varValue := initValues[returnType]
+		for {
 			p.GetNextToken()
-			if p.ExpectToken(p.Current.Kind, typeHandlers[returnType]) {
-				leftInit := ast.NewVarDecl(returnType, name, initValues[returnType])
-				left := ast.NewVarDeclExpr(leftInit)
+			switch p.Current.Kind {
+			case lx.ASSIGN:
 				p.GetNextToken()
-				if p.ExpectToken(p.Current.Kind, lx.SEMICOLON) {
-					return p.ParseAssignExpr(left)
+				if !p.ExpectToken(p.Current.Kind, typeHandlers[returnType]) {
+					return nil
 				}
+				switch p.Current.Kind {
+				case lx.STRING:
+					tmp, ok := p.Current.Value.(string)
+					if !ok {
+						return nil
+					}
+					varValue = ast.NewStringExpr(tmp)
+				case lx.NUMBER:
+					tmp, ok := p.Current.Value.(float64)
+					if !ok {
+						return nil
+					}
+					varValue = ast.NewNumberExpr(tmp)
+				}
+			case lx.SEMICOLON:
+				return ast.NewDeclExpr(ast.NewVarDecl(returnType, name, varValue))
+			default:
+				p.ExpectToken(p.Current.Kind, lx.ASSIGN, lx.SEMICOLON)
 				return nil
 			}
-		case lx.SEMICOLON:
-			leftInit := ast.NewVarDecl(returnType, name, initValues[returnType])
-			return ast.NewVarDeclExpr(leftInit)
-		default:
-			p.ExpectToken(p.Current.Kind, lx.OPAREN, lx.ASSIGN)
+		}
+	case lx.FUNC:
+		p.GetNextToken()
+		if !p.ExpectToken(p.Current.Kind, lx.OPAREN) {
 			return nil
 		}
+		p.GetNextToken()
+		return nil
+	default:
+		p.ExpectToken(p.Current.Kind, lx.VAR, lx.FUNC)
+		return nil
 	}
-	return nil
 }

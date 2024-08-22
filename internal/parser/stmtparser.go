@@ -6,18 +6,18 @@ import (
 )
 
 func (p *Parser) ParseBlock() []ast.Stmt {
-	block := []ast.Stmt{}
+	var block []ast.Stmt
 	var stmt ast.Stmt
 	p.GetNextToken() // Eat '{'
 	for {
 		switch p.Current.Kind {
 		case lx.TYPE:
-			stmt = p.ParseStmt()
+			stmt = ast.NewExprStmt(p.ParseIdentifierExpr())
 			block = append(block, stmt)
 		case lx.KEYWORD:
 			stmt = p.ParseKeywordStmt()
 			block = append(block, stmt)
-		case lx.SYMBOL:
+		case lx.FUNC:
 			p.GetNextToken()
 			switch p.Current.Kind {
 			case lx.OPAREN:
@@ -36,15 +36,11 @@ func (p *Parser) ParseBlock() []ast.Stmt {
 		case lx.CCURLY:
 			return block
 		default:
-			p.ExpectToken(p.Current.Kind, lx.TYPE, lx.KEYWORD, lx.SYMBOL, lx.CCURLY)
+			p.ExpectToken(p.Current.Kind, lx.TYPE, lx.KEYWORD, lx.FUNC, lx.CCURLY)
 			block = append(block, nil)
 		}
 		p.GetNextToken()
 	}
-}
-
-func (p *Parser) ParseStmt() ast.Stmt {
-	return nil
 }
 
 func (p *Parser) ParseReturnStmt() ast.Stmt {

@@ -178,8 +178,11 @@ func (l *Lexer) HandleKeyword() *Token {
 	if kind, ok := kindHandlers[l.Bufnr]; ok {
 		return NewToken(kind, l.Bufnr)
 	}
+	if l.LastByte == '(' {
+		return NewToken(FUNC, l.Bufnr)
+	}
 
-	return NewToken(SYMBOL, l.Bufnr)
+	return NewToken(VAR, l.Bufnr)
 }
 
 // HandleStringLiteral checks for '"' and consumes all bytes until another '"'. Just a normal string procedure.
