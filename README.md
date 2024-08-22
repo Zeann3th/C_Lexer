@@ -4,10 +4,10 @@
 
 An attempt to make a C lexer in Go. Not quite polished and fully functional but from this, i can learn how to make a lexer, and maybe a parser and compiler in the near future... 
 
-About learning sources, i watched Tsoding's:
-- [Military Grade C/C++ Lexer from Scratch](https://youtu.be/AqyZztKlSGQ?si=8VvN0P8PbarUr3Rb)
-- [Ok, i made C compiler in PHP (c.php Ep.01](https://youtu.be/Yi6NxMxCFY8?si=5msG4qRTffHirmnY)
-- [Kaleidoscope: kaleidoscope Introduction and the Lexer](https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/LangImpl01.html)
+About learning sources, i watched:
+- Tsoding's [Military Grade C/C++ Lexer from Scratch](https://youtu.be/AqyZztKlSGQ?si=8VvN0P8PbarUr3Rb)
+- Tsoding's [Ok, i made C compiler in PHP (c.php Ep.01](https://youtu.be/Yi6NxMxCFY8?si=5msG4qRTffHirmnY)
+- LLVM's [Kaleidoscope: kaleidoscope Introduction and the Lexer](https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/LangImpl01.html)
 
 ## 🔨 Installation
 
