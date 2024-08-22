@@ -21,9 +21,9 @@ func main() {
 	if err != nil {
 		log.Fatal(fmt.Sprintf("[FILEIO]: ERROR: Failed to open file <%v>", fileName))
 	}
-	// Tokenize(source)
+	Tokenize(source)
 
-	Parse(source)
+	// Parse(source)
 }
 
 func Tokenize(src []byte) {
